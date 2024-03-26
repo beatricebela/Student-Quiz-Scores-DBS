@@ -1,0 +1,86 @@
+STEP 1: CREATE DBS 
+
+  CREATE DATABASE practice
+
+STEP 2: CREATE TABLE 
+
+  CREATE TABLE IF NOT EXISTS public.students
+(
+    student_id integer NOT NULL,
+    first_name character varying COLLATE pg_catalog."default",
+    last_name character varying COLLATE pg_catalog."default",
+    birthday date,
+    age integer,
+    email character varying COLLATE pg_catalog."default",
+    address character varying COLLATE pg_catalog."default",
+    CONSTRAINT students_pkey PRIMARY KEY (student_id)
+)
+
+STEP 3: INSERT VALUES IN TABLE 
+
+  INSERT INTO students (student_id, first_name, last_name, birthday, age, email, address)
+VALUES  ( 01, 'Jhoanna Christine', 'Robles', 'January 26, 2004', 20, 'jcrobles@gmail.com', 'Calamba, Laguna'),
+	(02, 'Maraiah Queen', 'Arceta', 'January 27, 2001', 23, 'mqarceta@gmail.com', 'Lapu-lapu City, Cebu'),
+	(03, 'Ma. Nicolette', 'Vergara', 'September 14, 2001', 22, 'mnvergara@gmail.com', 'Tagbilaran, Bohol'),
+	(04, 'Mary Loi Yves', 'Ricalde', 'May 27, 2002', 21, 'mlyricalde@gmail.com', 'General Trias City, Cavite'),
+	(05, 'Gweneth', 'Apuli', 'June 19, 2003', 21, 'gapuli@gmail.com', 'Daraga, Albay'),
+	(06, 'Lindstey Stacey Aubrey', 'Sevilleja', 'July 13, 2003', 20, 'lsasevilleja@gmail.com', 'Bagbag, Nueva Vizcaya'),
+	(07, 'Mikhaela Janna', 'Lim', 'November 8, 2003', 20, 'mjlim@gmail.com', 'San Juan City'),
+	(08, 'Sheena Mae', 'Catacutan', 'May 9, 2004', 19, 'smcatacutan@gmail.com', 'Santiago City, Isabela')
+	;
+
+STEP 4: CREATE TABLES FOR RECORDS
+  CREATE TABLE quiz_1 (
+	score_over_20 INT,
+	id INT);
+
+ALTER TABLE quiz_1
+ADD CONSTRAINT FK_student_id
+FOREIGN KEY (student_id) REFERENCES students(student_id);
+
+CREATE TABLE quiz_2 (
+	score_over_30 INT,
+	id INT);
+
+ALTER TABLE quiz_2
+ADD CONSTRAINT FK_student_id
+FOREIGN KEY (student_id) REFERENCES students(student_id);
+
+STEP 5: INSERT VALUES ON TABLES
+  INSERT INTO quiz_1 (score_over_20, id)
+	VALUES (15, 1),
+ 	(18, 3),
+	(19, 4),
+	(20, 5),
+	(17, 6),
+	(18, 7),
+	(16, 8);
+
+ INSERT INTO quiz_2 (score_over_30, id)
+	VALUES (25, 1),
+	(28, 2),
+	(28, 3),
+	(29, 5),
+	(30, 6),
+	(26, 7),
+	(27, 8);
+
+QUERY STUDENTS WHO HAVE NOT ANSWERED/PASSED QUIZ 1 OR 2
+	SELECT *
+	FROM quiz_1 
+	WHERE student_id = 2;
+
+QUERY STUDENTS WHO HAVE A SCORE BEYOND THE PASSING SCORE ON QUIZ 1
+	SELECT *
+	FROM quiz_1
+	where score_over_20 >= 14
+
+UERY STUDENTS WHO HAVE A SCORE BEYOND THE PASSING SCORE ON QUIZ 2
+	SELECT *
+	FROM quiz_2
+	where score_over_30 >= 22
+
+JOIN 
+SELECT student_id, last_name, score_over_20
+FROM students 
+INNER JOIN quiz_1 ON students.student_id = quiz_1.id;
